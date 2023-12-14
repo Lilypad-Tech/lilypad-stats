@@ -3,6 +3,8 @@ import json
 import pandas as pd
 from pandas import json_normalize
 import os
+import os.path
+
 
 import matplotlib.pyplot as plt
 
@@ -10,9 +12,19 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    # Read the JSONL file
-    with open('lilypad_deals.jsonl', 'r') as file:
-        data = [json.loads(line) for line in file]
+    # if we're running in production, this file will exist. otherwise load the
+    # sample data from the repo
+    file_paths = ['/var/tmp/lilypad_deals.jsonl', './lilypad_deals.jsonl']
+    existing_file_path = None
+
+    for file_path in file_paths:
+        if os.path.exists(file_path):
+            existing_file_path = file_path
+            break
+
+    if existing_file_path:
+        with open(existing_file_path, 'r') as file:
+            data = [json.loads(line) for line in file]
 
     # Flatten the JSON data
     flattened_data = json_normalize(data)
