@@ -62,4 +62,4 @@ def serve_bar_graph():
     return send_from_directory(os.getcwd(), 'bar_graph.png')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
