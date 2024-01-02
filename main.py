@@ -38,8 +38,22 @@ def index():
     job_counts.columns = ['resource_provider', 'job_count']
     job_counts = job_counts.sort_values('job_count', ascending=False)
 
+    # Limit to top 10 job creators
+    job_counts = job_counts.head(10)
+
     # Generate the table HTML
     table_html = job_counts.to_html(index=False)
+
+    # Count the number of jobs per job_creator
+    job_creator_counts = df['job_creator'].value_counts().reset_index()
+    job_creator_counts.columns = ['job_creator', 'job_count']
+    job_creator_counts = job_creator_counts.sort_values('job_count', ascending=False)
+
+    # Limit to top 10 job creators
+    job_creator_counts = job_creator_counts.head(10)
+
+    # Generate the table HTML for job_creator_counts
+    table_2_html = job_creator_counts.to_html(index=False)
 
     # Count the number of jobs per day
     df['created_at'] = pd.to_datetime(df['deal.job_offer.created_at'], unit='ms')
@@ -55,7 +69,7 @@ def index():
     plt.savefig('bar_graph.png')
 
     # Render the HTML template with the table and bar graph
-    return render_template('index.html', table_html=table_html)
+    return render_template('index.html', table_html=table_html, table_2_html=table_2_html)
 
 @app.route('/bar_graph.png')
 def serve_bar_graph():

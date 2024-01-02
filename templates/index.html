@@ -23,6 +23,10 @@
             color: #333;
         }
 
+        h2 {
+            margin-top:2em;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -53,13 +57,20 @@
 <body>
     <div class="container">
         <h1>Lilypad Stats</h1>
-        {{ table_html|safe }}
+        <h2>Total number of jobs per day</h2>
         <div class="graph-container">
-            <h2>Total Number of Jobs per Day</h2>
             <div class="graph">
                 <img src="bar_graph.png" alt="Bar Graph">
             </div>
         </div>
+        <h2>Top 10 resource providers (nodes)</h2>
+        {{ table_html|safe }}
+        <h2>Top 10 job creators (clients)</h2>
+        {{ table_2_html|safe }}
+        <br />
+        <center>
+            Created by the maintainers of <a href="https://github.com/bacalhau-project/generic-dcn">Generic-DCN</a>.
+        </center>
     </div>
 </body>
 </html>
